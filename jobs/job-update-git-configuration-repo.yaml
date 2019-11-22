@@ -25,6 +25,7 @@ jobs:
           displayName: 'Download ArgoCD cli'
 
         - script: |
+            printenv
             ./release.sh
           displayName: 'Run Script'
           env:
