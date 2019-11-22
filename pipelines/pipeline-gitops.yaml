@@ -9,7 +9,7 @@ stages:
     image_tag: ''
   
   jobs:
-  - template: ../jobs/job-build-and-push-docker-container.yaml 
+  - template: ../jobs/job-build-and-push-docker.yaml 
     parameters:
       repository: ${{ parameters.dockerfile }}
 
