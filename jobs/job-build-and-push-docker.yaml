@@ -1,0 +1,27 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  containerRegistry: 'docker-hub'
+  repository: ''
+  dockerfile: '**/Dockerfile'
+
+steps:
+- script: |
+      echo "##vso[task.setvariable variable=image_tag] $(Build.SourceBranchName)-$(git log -n 1 --pretty=format:'%h')"
+  displayName: 'Get docker image tag'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: ${{ parameters.containerRegistry }}
+    repository: ${{ parameters.repository }}
+    command: 'build'
+    Dockerfile: ${{ parameters.dockerfile }}
+    tags: '$(image_tag)'
+    
+- task: Docker@2
+  inputs:
+    containerRegistry: ${{ parameters.containerRegistry }}
+    repository: ${{ parameters.repository }}
+    command: 'push'
+    tags: '$(image_tag)'

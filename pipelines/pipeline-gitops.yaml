@@ -1,0 +1,38 @@
+parameters:
+  dockerfile: 'Dockerfile'
+  applicationName: ''
+
+stages:
+- stage: build
+  
+  variables:
+    image_tag: ''
+  
+  jobs:
+  - template: ../jobs/job-build-and-push-docker-container.yaml 
+    parameters:
+      repository: ${{ parameters.dockerfile }}
+
+- stage: deploy_to_test
+  dependsOn: build
+  jobs:
+  - template: '../jobs/job-update-git-configuration-repo.yaml' 
+    parameters:
+      environment: 'test'
+      applicationName: '${{ parameters.dockerfile }}-test'
+
+- stage: deploy_to_qa
+  dependsOn: deploy_to_test
+  jobs:
+  - template: '../jobs/job-update-git-configuration-repo.yaml' 
+    parameters:
+      environment: 'qa'
+      applicationName: '${{ parameters.dockerfile }}-qa'
+
+- stage: deploy_to_prod
+  dependsOn: deploy_to_qa
+  jobs:
+  - template: '../jobs/job-update-git-configuration-repo.yaml' 
+    parameters:
+      environment: 'prod'
+      applicationName: '${{ parameters.dockerfile }}-prod'

@@ -1,0 +1,36 @@
+parameters:
+  environment: ''
+  applicationName: ''
+
+jobs:
+- deployment: update-configuration-repo
+  environment: ${{ parameters.environment }}
+  pool: 'ubuntu-latest'
+  
+  variables:
+    environmentname: ${{ parameters.environment }}
+    releaseScriptUrl: https://raw.githubusercontent.com/iremmats/azure-devops-templates/master/release.sh
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - script: |
+            curl $(releaseScriptUrl) 
+            chmod +x ./release.sh
+          displayName: 'Download Script'
+
+        - script: |
+            wget https://github.com/argoproj/argo-cd/releases/download/v1.3.0/argocd-linux-amd64 -o argocd
+            chmod +x ./argocd
+          displayName: 'Download ArgoCD cli'
+
+        - script: |
+            ./release.sh
+          displayName: 'Run Script'
+
+        - script: |
+            argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD
+            argocd app --server $ARGOCD_SERVER sync ${{ parameters.applicationName }}
+            argocd app wait ${{ parameters.applicationName }} --health --timeout 120
+          displayName: 'Sync in argocd'
