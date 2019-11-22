@@ -1,6 +1,7 @@
 parameters:
   dockerfile: 'Dockerfile'
-  applicationName: ''
+  applicationName:
+  repository:
 
 stages:
 - stage: build
@@ -11,7 +12,8 @@ stages:
   jobs:
   - template: ../jobs/job-build-and-push-docker.yaml 
     parameters:
-      repository: ${{ parameters.dockerfile }}
+      repository: ${{ parameters.repository }}
+      dockerfile: ${{ parameters.dockerfile }}
 
 - stage: deploy_to_test
   dependsOn: build
