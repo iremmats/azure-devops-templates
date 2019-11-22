@@ -5,7 +5,6 @@ parameters:
 jobs:
 - deployment: update-configuration-repo
   environment: ${{ parameters.environment }}
-  pool: 'ubuntu-latest'
   
   variables:
     environmentname: ${{ parameters.environment }}
