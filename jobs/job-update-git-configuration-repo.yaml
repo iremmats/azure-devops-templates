@@ -3,7 +3,7 @@ parameters:
   applicationName: ''
 
 jobs:
-- deployment: update-configuration-repo
+- deployment: update_configuration_repo
   environment: ${{ parameters.environment }}
   
   variables:
