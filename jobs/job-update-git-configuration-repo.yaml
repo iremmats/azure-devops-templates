@@ -15,7 +15,7 @@ jobs:
       deploy:
         steps:
         - script: |
-            curl $(releaseScriptUrl) 
+            curl $(releaseScriptUrl) > release.sh
             chmod +x ./release.sh
           displayName: 'Download Script'
 
