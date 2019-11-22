@@ -7,7 +7,6 @@ jobs:
   environment: ${{ parameters.environment }}
   
   variables:
-    access_token_secret:
     environmentname: ${{ parameters.environment }}
     releaseScriptUrl: https://raw.githubusercontent.com/iremmats/azure-devops-templates/master/release.sh
 
@@ -16,6 +15,7 @@ jobs:
       deploy:
         steps:
         - script: |
+            printenv
             curl $(releaseScriptUrl) > release.sh
             chmod +x ./release.sh
           displayName: 'Download Script'
