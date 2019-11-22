@@ -15,7 +15,6 @@ jobs:
       deploy:
         steps:
         - script: |
-            printenv
             curl $(releaseScriptUrl) > release.sh
             chmod +x ./release.sh
           displayName: 'Download Script'
@@ -28,6 +27,8 @@ jobs:
         - script: |
             ./release.sh
           displayName: 'Run Script'
+          env:
+            ACCESS_TOKEN_SECRET: $(access_token_secret)
 
         - script: |
             argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD
