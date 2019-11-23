@@ -12,6 +12,7 @@ repo_url=$GIT_CONFIGURATION_REPO
 repo_url="${repo_url#http://}"
 repo_url="${repo_url#https://}"
 
+echo repo_url
 echo "GIT CLONE: https://$ACCESS_TOKEN_SECRET@$repo_url"
 git clone "https://$ACCESS_TOKEN_SECRET@$repo_url"
 
@@ -21,11 +22,12 @@ repo_name=${repo%.*}
 cd "$repo_name"
 echo "GIT PULL ORIGIN MASTER"
 git pull origin master
-
+ls -al
 cd $PATH_IN_GIT_CONFIGURATION_REPO
+ls -al
 cd $ENVIRONMENT
 
-
+ls -al
 sed -i "s/docker_image_tag.*/docker_image_tag:'$BUILD_BUILDID',/g" params.libsonnet
 
 git config user.email "mats@iremark.se"
