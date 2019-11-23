@@ -31,8 +31,8 @@ jobs:
           env:
             ACCESS_TOKEN_SECRET: $(access_token_secret)
 
-        - script: |
-            argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD
-            argocd app --server $ARGOCD_SERVER sync ${{ parameters.applicationName }}
-            argocd app wait ${{ parameters.applicationName }} --health --timeout 120
-          displayName: 'Sync in argocd'
+        # - script: |
+        #     argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PASSWORD
+        #     argocd app --server $ARGOCD_SERVER sync ${{ parameters.applicationName }}
+        #     argocd app wait ${{ parameters.applicationName }} --health --timeout 120
+        #   displayName: 'Sync in argocd'
