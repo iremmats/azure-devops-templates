@@ -7,6 +7,8 @@ echo "VERIFYING PERSONAL ACCESS TOKEN"
 
 cd "$HOME"
 
+TAG="$BUILD_SOURCEBRANCHNAME-$(echo $BUILD_SOURCEVERSION | cut -c1-7)"
+
 # Remove http(s):// protocol from URL so we can insert PA token
 repo_url=$GIT_CONFIGURATION_REPO
 repo_url="${repo_url#http://}"
@@ -22,24 +24,18 @@ repo_name=${repo%.*}
 cd "$repo_name"
 echo "GIT PULL ORIGIN MASTER"
 git pull origin master
-ls -al
 cd $PATH_IN_GIT_CONFIGURATION_REPO
-ls -al
-echo "underscore $ENVIRONMENT_NAME"
-echo "no underscore $ENVIRONMENTNAME"
-ls -al test
 cd $ENVIRONMENTNAME
 
 
-ls -al
-sed -i "s/docker_image_tag.*/docker_image_tag:'$BUILD_BUILDID',/g" params.libsonnet
+sed -i "s/docker_image_tag.*/docker_image_tag:'$TAG',/g" params.libsonnet
 
 git config user.email "mats@iremark.se"
 git config user.name "Automated Azure Devops Account"
 
 echo "GIT COMMIT"
 git add params.libsonnet
-git commit -m "$PATH_IN_GIT_CONFIGURATION_REPO - $ENVIRONMENTNAME - $BUILD_BUILDID"
+git commit -m "$PATH_IN_GIT_CONFIGURATION_REPO - $ENVIRONMENTNAME - $TAG"
 
 echo "GIT PUSH"
 echo "GIT PUSH: https://$ACCESS_TOKEN_SECRET@$repo_url"
