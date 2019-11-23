@@ -25,7 +25,11 @@ git pull origin master
 ls -al
 cd $PATH_IN_GIT_CONFIGURATION_REPO
 ls -al
-cd $ENVIRONMENT_NAME
+echo "underscore $ENVIRONMENT_NAME"
+echo "no underscore $ENVIRONMENTNAME"
+ls -al test
+cd $ENVIRONMENTNAME
+
 
 ls -al
 sed -i "s/docker_image_tag.*/docker_image_tag:'$BUILD_BUILDID',/g" params.libsonnet
@@ -35,7 +39,7 @@ git config user.name "Automated Azure Devops Account"
 
 echo "GIT COMMIT"
 git add params.libsonnet
-git commit -m "$PATH_IN_GIT_CONFIGURATION_REPO - $ENVIRONMENT_NAME - $BUILD_BUILDID"
+git commit -m "$PATH_IN_GIT_CONFIGURATION_REPO - $ENVIRONMENTNAME - $BUILD_BUILDID"
 
 echo "GIT PUSH"
 echo "GIT PUSH: https://$ACCESS_TOKEN_SECRET@$repo_url"
